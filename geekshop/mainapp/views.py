@@ -3,6 +3,8 @@ from django.shortcuts import render
 import json
 import os
 
+from mainapp.models import Product, ProductCategory
+
 MODULE_DIR = os.path.dirname(__file__)
 # Create your views here.
 
@@ -19,7 +21,13 @@ def products(request):
     context = {
         'title': 'Geekshop - Каталог',
     }
-    context['products'] = json.load(open(file_path, encoding='utf-8'))
+
+    # context['products'] = json.load(open(file_path, encoding='utf-8'))
+    context['products'] = Product.objects.all()
+    context['categories'] = ProductCategory.objects.all()
+
+    return render(request, 'mainapp/products.html', context)
+
 
 # 'products': [
 #     {'name': 'Худи черного цвета с монограммами adidas Originals',
@@ -58,5 +66,3 @@ def products(request):
 #      'image': 'vendor/img/products/Dark-blue-wide-leg-ASOs-DESIGN-trousers.png',
 #      },
 # ]
-
-    return render(request, 'mainapp/products.html', context)
